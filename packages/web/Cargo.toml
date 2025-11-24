@@ -1,0 +1,31 @@
+[package]
+name = "web"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { workspace = true, features = ["router", "fullstack"] }
+ui = { workspace = true }
+api = { workspace = true }
+chrono = { workspace = true }
+gloo-net = "0.6"
+futures-util = { version = "0.3", features = ["sink", "std"] }
+serde_json = "1.0"
+futures = "0.3"
+tracing = { workspace = true }
+tracing-wasm = "0.2"
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+web-sys = { version = "0.3", features = ["Window", "Location"] }
+gloo-timers = { version = "0.3", features = ["futures"] }
+
+# Server-only dependencies (not for WASM)
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+tokio = { workspace = true }
+tracing-subscriber = { workspace = true }
+axum = { workspace = true }
+
+[features]
+default = []
+web = ["dioxus/web"]
+server = ["dioxus/server", "api/server"]

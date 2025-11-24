@@ -1,0 +1,22 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { workspace = true, features = ["fullstack"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Server-only dependencies (not for WASM)
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+tokio = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+portable-pty = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+axum = { workspace = true }
+
+[features]
+server = ["dioxus/server"]
