@@ -11,6 +11,7 @@ serde_json.workspace = true
 
 chrono = "0.4"
 clap = { version = "4.5", features = ["derive", "env"] }
+uuid = { version = "1.11", features = ["v4"], optional = true }
 
 [features]
-server = ["dioxus/server"]
+server = ["dioxus/server", "dep:uuid"]

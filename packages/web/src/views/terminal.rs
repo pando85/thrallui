@@ -1,8 +1,9 @@
+use api::{create_session, get_workspace_directories};
 use contracts::session::SessionInfoDTO;
 use ui::terminal::{SessionList, SessionManager, TerminalView};
 
-use dioxus::{logger::tracing, prelude::*};
-use api::get_workspace_directories;
+use dioxus::logger::tracing;
+use dioxus::prelude::*;
 
 #[component]
 pub fn Terminal() -> Element {
@@ -11,8 +12,22 @@ pub fn Terminal() -> Element {
     let mut active_session_id = use_signal(|| Option::<String>::None);
 
     let handle_create_session = move |name: String, directory: String, command: String| async move {
-        // TODO: Logic to create a new session
         tracing::trace!("Creating session: {}, {}, {}", name, directory, command);
+
+        match create_session(name, directory, command).await {
+            Ok(session_info) => {
+                let session_id = session_info.id.clone();
+
+                // Add the new session to the list
+                sessions.write().push(session_info);
+
+                // Set it as the active session
+                active_session_id.write().replace(session_id);
+            }
+            Err(e) => {
+                tracing::error!("Failed to create session: {:?}", e);
+            }
+        }
     };
     let handle_select_session = move |id: String| {
         active_session_id.write().replace(id);
@@ -24,9 +39,8 @@ pub fn Terminal() -> Element {
         }
     };
     // Fetch workspace directories from server
-    let directories_future = use_server_future(move || async move {
-        get_workspace_directories().await
-    })?;
+    let directories_future =
+        use_server_future(move || async move { get_workspace_directories().await })?;
 
     let allowed_directories = use_memo(move || {
         directories_future()
