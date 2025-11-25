@@ -2,6 +2,7 @@ use contracts::session::SessionInfoDTO;
 use ui::terminal::{SessionList, SessionManager, TerminalView};
 
 use dioxus::{logger::tracing, prelude::*};
+use api::get_workspace_directories;
 
 #[component]
 pub fn Terminal() -> Element {
@@ -22,7 +23,17 @@ pub fn Terminal() -> Element {
             active_session_id.write().take();
         }
     };
-    let mut allowed_directories = use_signal(|| Vec::<String>::new());
+    // Fetch workspace directories from server
+    let directories_future = use_server_future(move || async move {
+        get_workspace_directories().await
+    })?;
+
+    let allowed_directories = use_memo(move || {
+        directories_future()
+            .and_then(|result| result.ok())
+            .map(|dirs| dirs.into_iter().map(|d| d.path).collect())
+            .unwrap_or_else(Vec::new)
+    });
 
     let mut terminal_outputs =
         use_signal(|| std::collections::HashMap::<String, Vec<String>>::new());
@@ -46,7 +57,7 @@ pub fn Terminal() -> Element {
 
                 SessionManager {
                     on_create: move |(name, directory, command)| handle_create_session(name, directory, command),
-                    allowed_directories: allowed_directories.read().clone(),
+                    allowed_directories: allowed_directories(),
                 }
 
                 SessionList {

@@ -17,6 +17,12 @@ const FAVICON: Asset = asset!("/assets/favicon.ico");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
 fn main() {
+    // Initialize config on the server
+    #[cfg(feature = "server")]
+    {
+        api::Config::init();
+    }
+
     dioxus::launch(App);
 }
 
