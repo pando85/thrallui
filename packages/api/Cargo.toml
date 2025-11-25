@@ -1,0 +1,15 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+contracts.workspace = true
+dioxus = { workspace = true, features = ["fullstack"] }
+serde.workspace = true
+serde_json.workspace = true
+
+chrono = "0.4"
+
+[features]
+server = ["dioxus/server"]

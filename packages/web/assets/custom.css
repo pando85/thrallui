@@ -1,0 +1,230 @@
+/* Terminal Page Layout */
+.terminal-container {
+  @apply flex h-screen w-screen overflow-hidden;
+  background-color: #1e1e1e;
+}
+
+.terminal-left-panel {
+  @apply flex flex-col w-[600px] min-w-[600px] max-w-[600px] overflow-y-auto p-4;
+  border-right: 1px solid #444;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.terminal-right-panel {
+  @apply flex-1 overflow-hidden flex flex-col;
+  background-color: #1e1e1e;
+}
+
+.status-bar {
+  @apply fixed bottom-0 left-0 right-0 p-2 px-4 text-sm z-50;
+  background-color: #007acc;
+  color: white;
+}
+
+/* Session Manager */
+.session-manager {
+  @apply flex flex-col gap-3 p-0 mb-6;
+}
+
+/* Headless form group (no label) */
+.form-group-headless {
+  @apply w-full;
+}
+
+/* Task input - full width, larger, prominent */
+.task-input {
+  @apply w-full p-4 rounded text-sm leading-relaxed box-border transition-colors duration-200;
+  background-color: #2d2d30;
+  border: 1px solid #3c3c3c;
+  color: #d4d4d4;
+}
+
+.task-input::placeholder {
+  color: #6a6a6a;
+}
+
+.task-input:focus {
+  @apply outline-none;
+  border-color: #007acc;
+  background-color: #252526;
+}
+
+/* Input container for positioning the send button */
+.input-container {
+  @apply relative w-full;
+}
+
+/* Send button positioned in bottom right of input */
+.send-button {
+  @apply absolute right-2 bottom-2 w-8 h-8 rounded text-base font-bold cursor-pointer flex items-center justify-center transition-colors duration-200;
+  background-color: #ff8c00;
+  border: none;
+  color: white;
+}
+
+.send-button:hover {
+  background-color: #e67e00;
+}
+
+.send-button:active {
+  background-color: #cc7000;
+}
+
+/* Directory selector dropdown */
+.directory-select {
+  @apply w-full p-3 rounded text-sm font-mono cursor-pointer box-border transition-colors duration-200;
+  background-color: #2d2d30;
+  border: 1px solid #3c3c3c;
+  color: #d4d4d4;
+}
+
+.directory-select:focus {
+  @apply outline-none;
+  border-color: #007acc;
+}
+
+.directory-select option {
+  background-color: #2d2d30;
+  color: #d4d4d4;
+}
+
+.btn {
+  @apply p-2 px-6 rounded cursor-pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #007acc;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #005a9e;
+}
+
+.error-message {
+  @apply p-2 mb-4 rounded text-sm;
+  background-color: #f44336;
+  color: white;
+}
+
+/* Session List */
+.session-list h3 {
+  @apply mb-2 text-lg;
+  color: #d4d4d4;
+}
+
+.sessions {
+  @apply flex flex-col gap-2;
+}
+
+.session-item {
+  @apply flex justify-between items-center p-3 rounded cursor-pointer;
+  background-color: #2d2d30;
+  border: 1px solid #3c3c3c;
+}
+
+.session-item:hover {
+  background-color: #3c3c3c;
+}
+
+.session-item.active {
+  background-color: #094771;
+  border-color: #007acc;
+}
+
+.session-info {
+  @apply flex-1;
+}
+
+.session-name {
+  @apply font-bold;
+  color: #d4d4d4;
+}
+
+.session-directory {
+  @apply text-xs font-mono;
+  color: #888;
+}
+
+.session-time {
+  @apply text-xs font-mono;
+  color: #666;
+}
+
+.btn-close {
+  @apply w-6 h-6 rounded cursor-pointer;
+  background-color: transparent;
+  border: 1px solid #666;
+  color: #d4d4d4;
+}
+
+.btn-close:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.no-sessions {
+  @apply text-center p-8;
+  color: #888;
+}
+
+.hint {
+  @apply text-sm mt-2;
+}
+
+/* Terminal View */
+.terminal-view {
+  @apply flex flex-col h-full;
+}
+
+.terminal-output {
+  @apply flex-1 overflow-y-auto p-4 font-mono text-sm leading-relaxed;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.output-line {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-placeholder {
+  @apply italic text-center p-8;
+  color: #666;
+}
+
+.terminal-input-area {
+  @apply flex gap-2 p-4;
+  background-color: #252526;
+  border-top: 1px solid #3c3c3c;
+}
+
+.terminal-input {
+  @apply flex-1 p-2 rounded font-mono;
+  background-color: #3c3c3c;
+  border: 1px solid #555;
+  color: #d4d4d4;
+}
+
+.terminal-input:focus {
+  @apply outline-none;
+  border-color: #007acc;
+}
+
+.btn-send {
+  @apply p-2 px-6 rounded cursor-pointer;
+  background-color: #007acc;
+  color: white;
+  border: none;
+}
+
+.btn-send:hover {
+  background-color: #005a9e;
+}
+
+.no-session-selected {
+  @apply flex flex-col items-center justify-center h-full;
+  color: #888;
+}
