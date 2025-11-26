@@ -1,4 +1,4 @@
-use api::get_workspace_directories;
+use api::directory::get_workspace_directories;
 use api::session::{close_session, create_session, SessionInfoDTO};
 use ui::terminal::{SessionList, SessionManager, TerminalView};
 
