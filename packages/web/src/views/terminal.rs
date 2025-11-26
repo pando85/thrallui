@@ -1,5 +1,5 @@
 use api::get_workspace_directories;
-use api::session::{create_session, SessionInfoDTO};
+use api::session::{close_session, create_session, SessionInfoDTO};
 use ui::terminal::{SessionList, SessionManager, TerminalView};
 
 use dioxus::logger::tracing;
@@ -30,12 +30,26 @@ pub fn Terminal() -> Element {
         }
     };
     let handle_select_session = move |id: String| {
+        // Client-side only: update which session is active in the UI
         active_session_id.write().replace(id);
     };
-    let handle_close_session = move |id: String| {
-        sessions.retain(|s| s.id != id);
-        if active_session_id.read().as_ref() == Some(&id) {
-            active_session_id.write().take();
+    let handle_close_session = move |id: String| async move {
+        tracing::trace!("Closing session: {}", id);
+
+        // Call server function to terminate the session
+        match close_session(id.clone()).await {
+            Ok(_) => {
+                // Remove from UI list
+                sessions.retain(|s| s.id != id);
+
+                // Clear active session if it was the one being closed
+                if active_session_id.read().as_ref() == Some(&id) {
+                    active_session_id.write().take();
+                }
+            }
+            Err(e) => {
+                tracing::error!("Failed to close session: {:?}", e);
+            }
         }
     };
     // Fetch workspace directories from server

@@ -3,7 +3,6 @@ pub mod session;
 
 pub use config::Config;
 
-use dioxus::logger::tracing;
 use dioxus::prelude::*;
 
 /// Get all child directories (depth level 1) from the configured workspace root

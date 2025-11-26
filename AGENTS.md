@@ -96,6 +96,50 @@ The web crate uses feature flags to control compilation:
 
 The `ui` crate's `server` feature cascades to `api/server`.
 
+### Server-Only Dependencies
+
+For dependencies that are only needed in server code (not in WASM/client builds), use optional dependencies in `Cargo.toml`:
+
+```toml
+# In packages/api/Cargo.toml
+[dependencies]
+uuid = { version = "1.11", features = ["v4"], optional = true }
+
+[features]
+server = ["dioxus/server", "dep:uuid"]
+```
+
+This approach:
+- **Reduces WASM bundle size** by excluding server-only deps from client builds
+- **Prevents compilation errors** when server-only crates can't compile to WASM
+- **Improves build times** by not processing unnecessary dependencies
+
+**Common server-only dependencies:**
+- `uuid` - For generating unique IDs
+- Database clients (e.g., `sqlx`, `diesel`)
+- Process spawning libraries (e.g., `portable-pty`)
+
+**Using server-only dependencies in code:**
+```rust
+// In packages/api/src/session/mod.rs
+#[post("/api/sessions/create")]
+pub async fn create_session(/* ... */) -> Result<SessionInfoDTO, ServerFnError> {
+    use uuid::Uuid;  // Import inside the server function
+
+    let session_id = Uuid::new_v4().to_string();
+    // ...
+}
+```
+
+**Note:** Always import `tracing` from `dioxus::logger::tracing` instead of adding it as a separate dependency, as it's already included in Dioxus.
+
+**Module-level server code:**
+For entire modules that only run on the server, use:
+```rust
+#[cfg(feature = "server")]
+mod server;  // This module is only compiled when the server feature is enabled
+```
+
 ## Code Organization Principles
 
 - **Shared UI components**: Put in `packages/ui/` (e.g., `SessionList`, `TerminalView`, `Navbar`)

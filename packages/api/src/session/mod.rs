@@ -46,3 +46,13 @@ pub async fn create_session(
         created_at,
     })
 }
+
+/// Close a terminal session
+#[post("/api/sessions/close")]
+pub async fn close_session(session_id: String) -> Result<(), ServerFnError> {
+    // TODO: Actually terminate the PTY process here
+    // For now, we just log the operation
+    tracing::info!("Closing session: id={}", session_id);
+
+    Ok(())
+}
