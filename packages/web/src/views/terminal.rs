@@ -1,5 +1,5 @@
-use api::{create_session, get_workspace_directories};
-use contracts::session::SessionInfoDTO;
+use api::get_workspace_directories;
+use api::session::{create_session, SessionInfoDTO};
 use ui::terminal::{SessionList, SessionManager, TerminalView};
 
 use dioxus::logger::tracing;

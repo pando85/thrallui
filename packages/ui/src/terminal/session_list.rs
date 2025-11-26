@@ -1,4 +1,4 @@
-use contracts::session::SessionInfoDTO;
+use api::session::SessionInfoDTO;
 
 use dioxus::prelude::*;
 

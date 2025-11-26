@@ -1,7 +1,6 @@
-use contracts::session::SessionInfoDTO;
+use super::SessionInfoDTO;
 
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
 
 /// Full session state stored on the server
 #[derive(Debug)]
